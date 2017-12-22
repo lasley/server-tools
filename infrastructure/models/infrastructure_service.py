@@ -4,6 +4,8 @@
 
 from odoo import api, fields, models
 
+from .constants import STATES_ACTIVE, STATES_HEALTH
+
 
 class InfrastructureService(models.Model):
 
@@ -14,17 +16,18 @@ class InfrastructureService(models.Model):
         required=True,
     )
     description = fields.Char()
-    state = fields.Selection([
-        # @TODO: this
-    ])
+    state = fields.Selection(
+        selection=STATES_ACTIVE,
+        default='inactive',
+    )
     date_create = fields.Datetime(
         string='Creation Date',
         default=fields.Datetime.now,
     )
     scale_current = fields.Integer()
-    state_health = fields.Selection([
-        # @TODO: Centralize from volumes
-    ])
+    state_health = fields.Selection(
+        selection=STATES_HEALTH,
+    )
     instance_ids = fields.One2many(
         string='Instances',
         comodel_name='infrastructure.instance',

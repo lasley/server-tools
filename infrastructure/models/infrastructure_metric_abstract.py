@@ -16,7 +16,6 @@ class InfrastructureMetricAbstract(models.AbstractModel):
         ('infrastructure.volume', 'Volume'),
         ('infrastructure.file.system', 'File System'),
     ],
-        required=True,
         readonly=True,
         help='This is the object that the metric was taken from.',
     )

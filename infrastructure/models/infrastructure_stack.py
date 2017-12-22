@@ -7,13 +7,13 @@ from odoo import api, fields, models
 from .constants import STATES_ACTIVE, STATES_HEALTH
 
 
-class InfrastructureHost(models.Model):
+class InfrastructureStack(models.Model):
 
-    _name = 'infrastructure.host'
-    _description = 'Infrastructure Hosts'
+    _name = 'infrastructure.stack'
+    _description = 'Infrastructure Stacks'
 
     name = fields.Char(
-        string='Hostname',
+        required=True,
     )
     description = fields.Char()
     environment_id = fields.Many2one(
@@ -25,6 +25,7 @@ class InfrastructureHost(models.Model):
     state = fields.Selection(
         selection=STATES_ACTIVE,
         default='inactive',
+        required=True,
     )
     state_health = fields.Selection(
         selection=STATES_HEALTH,
@@ -58,19 +59,19 @@ class InfrastructureHost(models.Model):
     file_system_ids = fields.One2many(
         string='File Systems',
         comodel_name='infrastructure.file.system',
-        inverse_name='host_id',
+        inverse_name='stack_id',
     )
     parent_id = fields.Many2one(
         string='Hypervisor',
         comodel_name=_name,
-        help='This is the hypervisor for the host, if virtualized.',
+        help='This is the hypervisor for the stack, if virtualized.',
         readonly=True,
     )
     child_ids = fields.One2many(
         string='Virtual Machines',
         comodel_name=_name,
         inverse_name='parent_id',
-        help='If this host is a hypervisor, these are its virtual machines.',
+        help='If this stack is a hypervisor, these are its virtual machines.',
     )
     operating_system_id = fields.Many2one(
         string='Operating System',

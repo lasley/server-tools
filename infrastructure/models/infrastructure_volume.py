@@ -4,6 +4,8 @@
 
 from odoo import api, fields, models
 
+from .constants import STATES_ACTIVE, STATES_HEALTH
+
 
 class InfrastructureVolume(models.Model):
 
@@ -16,15 +18,12 @@ class InfrastructureVolume(models.Model):
     external_name = fields.Char(
         help='This is the name of the volume according to the volume driver.',
     )
-    state = fields.Selection([
-        ('active', 'Active'),
-        ('disconnected', 'Disconnected'),
-        ('inactive', 'Inactive'),
-        ('reconnecting', 'Reconnecting'),
-        ('purged', 'Purged'),
-    ],
+    state = fields.Selection(
+        selection=STATES_ACTIVE,
         default='inactive',
-        required=True,
+    )
+    state_health = fields.Selection(
+        selection=STATES_HEALTH,
     )
     access_mode = fields.Char()
     driver = fields.Char()

@@ -19,4 +19,7 @@ from . import infrastructure_metric_memory
 from . import infrastructure_metric_storage
 from . import infrastructure_option
 from . import infrastructure_option_system
+from . import infrastructure_software
+from . import infrastructure_software_license
+from . import infrastructure_software_version
 from . import infrastructure_volume_mount

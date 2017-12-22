@@ -42,13 +42,3 @@ class InfrastructureMetricCpu(models.Model):
         readonly=True,
         domain="[('category_id.name', '=', 'Frequency')]",
     )
-
-    @api.multi
-    def name_get(self):
-        names = []
-        for record in self:
-            name = '%s, %s, %s' % (
-                record.load_one, record.load_five, record.load_fifteen,
-            )
-            names.append((record.id, name))
-        return names

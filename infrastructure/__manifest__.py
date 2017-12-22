@@ -14,7 +14,7 @@
     'application': True,
     'installable': True,
     'depends': [
-        'product',
+        'product_uom_technology',
     ],
     'data': [
         'views/infrastructure_environment_view.xml',

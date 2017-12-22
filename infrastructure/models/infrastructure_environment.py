@@ -4,6 +4,8 @@
 
 from odoo import api, fields, models
 
+from .constants import STATES_HEALTH
+
 
 class InfrastructureEnvironment(models.Model):
 
@@ -19,16 +21,9 @@ class InfrastructureEnvironment(models.Model):
         ('deactivated', 'Deactivated'),
     ],
         default='deactivated',
-        required=True,
-        readonly=True,
     )
-    state_health = fields.Selection([
-        ('healthy', 'Healthy'),
-        ('degraded', 'Degraded'),
-        ('unhealthy', 'Unhealthy'),
-    ],
-        default='unhealthy',
-        readonly=True,
+    state_health = fields.Selection(
+        selection=STATES_HEALTH,
     )
     date_create = fields.Datetime(
         string='Create Date',

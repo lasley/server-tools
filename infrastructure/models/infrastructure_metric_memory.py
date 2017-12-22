@@ -17,6 +17,9 @@ class InfrastructureMetricMemory(models.Model):
     memory_cache = fields.Float(
         readonly=True,
     )
+    memory_buffer = fields.Float(
+        readonly=True,
+    )
     memory_used = fields.Float(
         readonly=True,
     )

@@ -17,8 +17,34 @@ class InfrastructureOption(models.Model):
         required=True,
     )
 
+    _sql_constraints = [
+        ('name_value_unique', 'UNIQUE(name, value)',
+         'This name/value combination already exists.'),
+    ]
+
     @api.multi
     def name_get(self):
         return [
             (n.id, '%s: "%s"' % (n.name, n.value)) for n in self
         ]
+
+    @api.multi
+    def get_or_create(self, name, value, **others):
+        """Return an existing or new option matching ``name`` and ``value``.
+        """
+        domain = [
+            ('name', '=', name),
+            ('value', '=', value),
+        ]
+        domain += [
+            (key, '=', value) for key, value in others.items()
+        ]
+        option = self.search(domain)
+        if option:
+            return option[:1]
+        values = {
+            'name': name,
+            'value': value,
+        }
+        values.update(others)
+        return self.create(values)
