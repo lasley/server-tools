@@ -14,7 +14,6 @@ class InfrastructureServiceConfig(models.Model):
     service_id = fields.Many2one(
         string='Service',
         comodel_name='infrastructure.service',
-        required=True,
         ondelete='cascade',
     )
     memory_uom_id = fields.Many2one(

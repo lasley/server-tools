@@ -20,6 +20,16 @@ class InfrastructureService(models.Model):
         selection=STATES_ACTIVE,
         default='inactive',
     )
+    stack_id = fields.Many2one(
+        string='Stack',
+        comodel_name='infrastructure.stack',
+        ondelete='cascade',
+    )
+    environment_id = fields.Many2one(
+        string='Environment',
+        comodel_name='infrastructure.environment',
+        ondelete='cascade',
+    )
     date_create = fields.Datetime(
         string='Creation Date',
         default=fields.Datetime.now,

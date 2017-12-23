@@ -22,4 +22,5 @@ from . import infrastructure_option_system
 from . import infrastructure_software
 from . import infrastructure_software_license
 from . import infrastructure_software_version
+from . import infrastructure_stack
 from . import infrastructure_volume_mount

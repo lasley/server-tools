@@ -64,4 +64,3 @@ class InfrastructureSoftwareVersion(models.Model):
         }
         values.update(additional_attributes)
         return self.create(values)
-

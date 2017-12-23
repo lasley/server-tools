@@ -2,7 +2,7 @@
 # Copyright 2017 LasLabs Inc.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class InfrastructureInstance(models.Model):
@@ -16,7 +16,6 @@ class InfrastructureInstance(models.Model):
     service_id = fields.Many2one(
         string='Service',
         comodel_name='infrastructure.service',
-        required=True,
         ondelete='cascade',
     )
     mount_ids = fields.One2many(

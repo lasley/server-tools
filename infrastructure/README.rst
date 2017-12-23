@@ -34,6 +34,7 @@ Known Issues
 Road Map
 --------
 
+* Provide real permissions.
 * Add the ability to track licenses that are actually being used against the
   host or service that is using them.
 

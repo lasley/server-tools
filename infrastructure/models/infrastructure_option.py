@@ -36,9 +36,7 @@ class InfrastructureOption(models.Model):
             ('name', '=', name),
             ('value', '=', value),
         ]
-        domain += [
-            (key, '=', value) for key, value in others.items()
-        ]
+        domain += [(k, '=', v) for k, v in others.items()]
         option = self.search(domain)
         if option:
             return option[:1]
