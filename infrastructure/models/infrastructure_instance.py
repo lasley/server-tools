@@ -23,3 +23,8 @@ class InfrastructureInstance(models.Model):
         comodel_name='infrastructure.volume.mount',
         inverse_name='instance_id',
     )
+    host_id = fields.Many2one(
+        string='Host',
+        comodel_name='infrastructure.host',
+        required=True,
+    )

@@ -59,12 +59,10 @@
                 <field name="state_health" />
                 <field name="instance_ids" />
 
-                <group expand="0" string="Group By">
-                    <filter string="State"
-                            domain=""
-                            context="{'group_by': 'state'}"
-                            />
-                </group>
+                <filter string="State"
+                        domain=""
+                        context="{'group_by': 'state'}"
+                        />
 
             </search>
         </field>

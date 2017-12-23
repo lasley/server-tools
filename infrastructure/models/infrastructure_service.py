@@ -46,7 +46,6 @@ class InfrastructureService(models.Model):
     config_id = fields.Many2one(
         string='Current Configuration',
         comodel_name='infrastructure.service.config',
-        compute='_compute_config_id',
     )
     previous_config_id = fields.Many2one(
         string='Previous Configuration',

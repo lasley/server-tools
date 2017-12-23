@@ -12,21 +12,21 @@
               />
 
     <menuitem id="menu_infrastucture_environment"
-              name="Enviroments"
+              name="Environments"
               parent="menu_infrastructure"
               sequence="10"
               action="infrastructure_environment_action"
               />
 
     <menuitem id="menu_infrastucture_host"
-              name="Enviroments"
+              name="Hosts"
               parent="menu_infrastructure"
               sequence="10"
               action="infrastructure_host_action"
               />
 
     <menuitem id="menu_infrastucture_service"
-              name="Enviroments"
+              name="Services"
               parent="menu_infrastructure"
               sequence="10"
               action="infrastructure_service_action"

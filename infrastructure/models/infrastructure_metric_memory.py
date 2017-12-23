@@ -11,28 +11,31 @@ class InfrastructureMetricMemory(models.Model):
     _description = 'Infrastructure Memory Metrics'
     _inherit = 'infrastructure.metric.abstract'
 
-    memory_free = fields.Float(
+    memory_free = fields.Integer(
         readonly=True,
     )
-    memory_cache = fields.Float(
+    memory_cache = fields.Integer(
         readonly=True,
     )
-    memory_buffer = fields.Float(
+    memory_buffer = fields.Integer(
         readonly=True,
     )
-    memory_used = fields.Float(
+    memory_used = fields.Integer(
         readonly=True,
     )
-    memory_total = fields.Float(
+    memory_total = fields.Integer(
         readonly=True,
     )
-    swap_cache = fields.Float(
+    memory_available = fields.Integer(
         readonly=True,
     )
-    swap_free = fields.Float(
+    swap_cache = fields.Integer(
         readonly=True,
     )
-    swap_total = fields.Float(
+    swap_free = fields.Integer(
+        readonly=True,
+    )
+    swap_total = fields.Integer(
         readonly=True,
     )
     uom_id = fields.Many2one(
@@ -50,7 +53,8 @@ class InfrastructureMetricMemory(models.Model):
     def name_get(self):
         names = []
         for record in self:
-            name = '%s total, %s free, %s used, %s buff/cache' % (
+            name = '%s: %s total, %s free, %s used, %s buff/cache' % (
+                record.uom_id.name,
                 record.memory_total,
                 record.memory_free,
                 record.memory_used,

@@ -12,9 +12,7 @@ class InfrastructureHost(models.Model):
     _name = 'infrastructure.host'
     _description = 'Infrastructure Hosts'
 
-    name = fields.Char(
-        string='Hostname',
-    )
+    name = fields.Char()
     description = fields.Char()
     environment_id = fields.Many2one(
         string='Environment',

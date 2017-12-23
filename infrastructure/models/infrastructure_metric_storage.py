@@ -21,13 +21,13 @@ class InfrastructureMetricStorage(models.Model):
         domain="[('category_id.name', '=', 'Information')]",
         help='This unit represents all statistics for this record.',
     )
-    free = fields.Float(
+    free = fields.Integer(
         readonly=True,
     )
-    used = fields.Float(
+    used = fields.Integer(
         readonly=True,
     )
-    total = fields.Float(
+    total = fields.Integer(
         readonly=True,
     )
     percent_used = fields.Float(

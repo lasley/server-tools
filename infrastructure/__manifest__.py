@@ -17,6 +17,7 @@
         'product_uom_technology',
     ],
     'data': [
+        'security/ir.model.access.csv',
         'views/infrastructure_environment_view.xml',
         'views/infrastructure_host_view.xml',
         'views/infrastructure_instance_view.xml',
