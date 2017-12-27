@@ -58,7 +58,7 @@ class InfrastructureMetricMemory(models.Model):
                 record.memory_total,
                 record.memory_free,
                 record.memory_used,
-                record.memory_cache,
+                record.memory_cache + record.memory_buffer,
             )
             names.append((record.id, name))
         return names

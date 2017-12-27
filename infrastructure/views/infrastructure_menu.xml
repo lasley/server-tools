@@ -21,15 +21,29 @@
     <menuitem id="menu_infrastucture_host"
               name="Hosts"
               parent="menu_infrastructure"
-              sequence="10"
+              sequence="20"
               action="infrastructure_host_action"
+              />
+
+    <menuitem id="menu_infrastructure_stack"
+              name="Stacks"
+              parent="menu_infrastructure"
+              sequence="30"
+              action="infrastructure_stack_action"
               />
 
     <menuitem id="menu_infrastucture_service"
               name="Services"
               parent="menu_infrastructure"
-              sequence="10"
+              sequence="50"
               action="infrastructure_service_action"
+              />
+
+    <menuitem id="menu_infrastucture_instance"
+              name="Instances"
+              parent="menu_infrastructure"
+              sequence="100"
+              action="infrastructure_instance_action"
               />
 
 </odoo>

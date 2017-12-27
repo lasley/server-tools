@@ -21,7 +21,12 @@
         'views/infrastructure_environment_view.xml',
         'views/infrastructure_host_view.xml',
         'views/infrastructure_instance_view.xml',
+        'views/infrastructure_option_view.xml',
+        'views/infrastructure_option_system_view.xml',
         'views/infrastructure_service_view.xml',
+        'views/infrastructure_stack_view.xml',
+        'views/infrastructure_volume_view.xml',
+        'views/infrastructure_volume_mount_view.xml',
         # Menu Last
         'views/infrastructure_menu.xml',
     ],

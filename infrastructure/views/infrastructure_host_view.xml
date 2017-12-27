@@ -17,10 +17,18 @@
                     <h1>
                         <field name="name" class="oe_inline" />
                     </h1>
-                    <group name="group_options">
+                    <group name="group_meta">
                         <field name="description" />
                         <field name="environment_id" />
-                        <field name="label_ids" />
+                        <field name="operating_system_id" />
+                        <field name="kernel_id" />
+                        <field name="virtualization_id" />
+                        <field name="label_ids">
+                            <tree>
+                                <field name="name" />
+                                <field name="value" />
+                            </tree>
+                        </field>
                     </group>
                     <notebook>
                         <page name="page_metrics" string="Metrics">
@@ -36,6 +44,11 @@
                                 <field name="file_system_ids"
                                        context="{'default_host_id': id}"
                                        />
+                            </group>
+                        </page>
+                        <page name="page_instances" string="Instances">
+                            <group name="group_instances">
+                                <field name="instance_ids" />
                             </group>
                         </page>
                         <page name="page_virtualization" string="Virtualization">

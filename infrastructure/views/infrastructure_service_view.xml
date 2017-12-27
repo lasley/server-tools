@@ -24,7 +24,7 @@
                     </group>
                     <group name="group_config" colspan="6">
                         <field name="config_id" />
-                        <field name="previous_config_id" />
+                        <field name="config_ids" />
                     </group>
                     <group name="group_instances">
                         <field name="instance_ids" />

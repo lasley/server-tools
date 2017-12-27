@@ -13,9 +13,7 @@ class InfrastructureOption(models.Model):
     name = fields.Char(
         required=True,
     )
-    value = fields.Char(
-        required=True,
-    )
+    value = fields.Char()
 
     _sql_constraints = [
         ('name_value_unique', 'UNIQUE(name, value)',
@@ -28,8 +26,19 @@ class InfrastructureOption(models.Model):
             (n.id, '%s: "%s"' % (n.name, n.value)) for n in self
         ]
 
-    @api.multi
-    def get_or_create(self, name, value, **others):
+    @api.model
+    def get_or_create_bulk(self, iterator):
+        """Get/create in bulk. Iterator lines feed to ``get_or_create``."""
+        results = self
+        for i in iterator:
+            try:
+                results += self.get_or_create(**i)
+            except TypeError:
+                results += self.get_or_create(*i)
+        return results
+
+    @api.model
+    def get_or_create(self, name, value=False, **others):
         """Return an existing or new option matching ``name`` and ``value``.
         """
         domain = [

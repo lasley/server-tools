@@ -15,6 +15,7 @@ class InfrastructureFileSystem(models.Model):
         string='Last Metric',
         comodel_name='infrastructure.metric.storage',
         compute='_compute_metric_id',
+        inverse='_inverse_metric_id',
     )
     metric_ids = fields.Many2many(
         string='Metrics',
@@ -27,7 +28,32 @@ class InfrastructureFileSystem(models.Model):
         ondelete='restrict',
     )
 
+    _sql_constraints = [
+        ('volume_unique', 'UNIQUE(volume_id)',
+         'A file system is already mapped to this volume.'),
+    ]
+
     @api.multi
     def _compute_metric_id(self):
         for record in self:
             record.metric_id = record.metric_ids[:1].id
+
+    @api.multi
+    def _inverse_metric_id(self):
+        for record in self:
+            if record.cpu_metric_id:
+                record.metric_id.reference = record
+                record.metric_ids = [(4, record.metric_id.id)]
+
+    @api.model
+    def get_or_create(self, name, host, **additional):
+        additional['type'] = 'file_system'
+        volume = self.env['infrastructure.volume'].get_or_create(
+            name, host, **additional
+        )
+        file_system = self.search([('volume_id', '=', volume.id)])
+        if file_system:
+            return file_system[:1]
+        return self.create({
+            'volume_id': volume.id,
+        })

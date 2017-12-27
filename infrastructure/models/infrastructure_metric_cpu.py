@@ -52,5 +52,5 @@ class InfrastructureMetricCpu(models.Model):
                 record.load_five,
                 record.load_fifteen,
             )
-            names.append((record.id,name))
+            names.append((record.id, name))
         return names

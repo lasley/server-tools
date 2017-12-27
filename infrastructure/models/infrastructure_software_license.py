@@ -50,9 +50,3 @@ class InfrastructureSoftwareLicense(models.Model):
         for record in self:
             record.is_valid = \
                 record.valid_start <= date_today <= record.valid_end
-
-    @api.multi
-    def name_get(self):
-        return [
-            (r.id, '%s %s' % (r.name, r.version)) for r in self
-        ]

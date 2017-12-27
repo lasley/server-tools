@@ -9,8 +9,8 @@ class InfrastructureSoftwareVersion(models.Model):
 
     _name = 'infrastructure.software.version'
     _description = 'Infrastructure Software Versions'
-
     _inherits = {'infrastructure.software': 'software_id'}
+    _rec_name = 'display_name'
 
     display_name = fields.Char(
         compute='_compute_display_name',
@@ -24,7 +24,7 @@ class InfrastructureSoftwareVersion(models.Model):
     )
     license_ids = fields.Many2many(
         string='Licenses',
-        comodel_name='infrastructure.service.license',
+        comodel_name='infrastructure.software.license',
         domain="[('software_id', '=', software_id)]",
         context="{'default_software_id': software_id}",
         help='Software licenses that can apply to this version.',

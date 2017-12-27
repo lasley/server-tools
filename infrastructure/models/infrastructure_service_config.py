@@ -2,13 +2,18 @@
 # Copyright 2017 LasLabs Inc.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
-from odoo import fields, models
+from uuid import uuid4
+
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 
 class InfrastructureServiceConfig(models.Model):
 
     _name = 'infrastructure.service.config'
     _description = 'Infrastructure Service Configuration'
+    _order = 'active, date_deactivated desc, id desc'
+    _rec_name = 'version'
 
     description = fields.Char()
     service_id = fields.Many2one(
@@ -22,10 +27,11 @@ class InfrastructureServiceConfig(models.Model):
         default=lambda s: s.env.ref(
             'product_uom_technology.product_uom_gib',
         ),
-        domain="[('category_id.name', '=', 'Information')]",
+        domain=[('category_id.name', '=', 'Information')],
         help='This unit represents all memory and storage statistics for '
              'this record.',
     )
+    disk_limit = fields.Float()
     memory_limit = fields.Float()
     memory_reservation = fields.Float()
     memory_swap = fields.Float()
@@ -51,6 +57,11 @@ class InfrastructureServiceConfig(models.Model):
              'the host machine\'s CPU cycles. This is typically only '
              'enforced when CPU cycles are constrained.',
     )
+    cpu_count = fields.Integer(
+        help='This is the maximum amount of CPUs/cores that an instance '
+             'can use.',
+    )
+    cpu_reservation = fields.Integer()
     log_driver = fields.Char()
     log_option_ids = fields.Many2many(
         string='Log Options',
@@ -81,6 +92,51 @@ class InfrastructureServiceConfig(models.Model):
     is_privileged = fields.Boolean(
         help='Does this service have privileged access to the host?',
     )
-    scale_max = fields.Float(
-        default=1,
+    version = fields.Char(
+        default=lambda s: uuid4(),
+        required=True,
+        help='A globally unique identifier for this configuration version.',
     )
+    active = fields.Boolean(
+        default=True,
+    )
+    date_deactivated = fields.Datetime(
+        compute='_compute_date_deactivated',
+        inverse='_inverse_date_deactivated',
+        store=True,
+        readonly=True,
+    )
+    linked_service_ids = fields.Many2many(
+        string='Linked Services',
+        comodel_name='infrastructure.service',
+    )
+
+    _sql_constraints = [
+        ('service_version_unique', 'UNIQUE(service_id, version)',
+         'Configuration version identifiers must be unique per service.'),
+    ]
+
+    @api.multi
+    @api.depends('active')
+    def _compute_date_deactivated(self):
+        for record in self:
+            if record.active or record.date_deactivated:
+                continue
+            record.date_deactivated = fields.Datetime.now()
+
+    @api.multi
+    def _inverse_date_deactivated(self):
+        for record in self:
+            if record.active and record.date_deactivated:
+                record.active = False
+
+    @api.multi
+    @api.constrains('cpu_count', 'cpu_pin')
+    def _check_cpu_count_pin(self):
+        """CPU counting and CPU pinning cannot be active at same time."""
+        for record in self:
+            if record.cpu_count and record.cpu_pin:
+                raise ValidationError(_(
+                    'CPU counting and CPU pinning are not compatible features. '
+                    'Use one or the other.',
+                ))

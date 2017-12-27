@@ -18,6 +18,7 @@ class InfrastructureHost(models.Model):
         string='Environment',
         comodel_name='infrastructure.environment',
         required=True,
+        readonly=True,
         ondelete='restrict',
     )
     state = fields.Selection(
@@ -58,6 +59,18 @@ class InfrastructureHost(models.Model):
         comodel_name='infrastructure.file.system',
         inverse_name='host_id',
     )
+    file_system_volume_ids = fields.Many2many(
+        string='File System Volumes',
+        comodel_name='infrastructure.volume',
+        compute='_compute_file_system_volume_ids',
+        search='_search_file_system_volume_ids',
+    )
+    volume_ids = fields.One2many(
+        string='Volumes',
+        comodel_name='infrastructure.volume',
+        inverse_name='host_id',
+        domain='[("id", "not in", file_system_volume_ids)]',
+    )
     parent_id = fields.Many2one(
         string='Hypervisor',
         comodel_name=_name,
@@ -78,12 +91,17 @@ class InfrastructureHost(models.Model):
     kernel_id = fields.Many2one(
         string='Kernel',
         comodel_name='infrastructure.software.version',
-        domain="[('type', '=', kernel')]",
+        domain="[('type', '=', 'kernel')]",
     )
     virtualization_id = fields.Many2one(
         string='Virtualization Software',
         comodel_name='infrastructure.software.version',
-        domain="[('type', '=', virtualization')]",
+        domain="[('type', '=', 'virtualization')]",
+    )
+    instance_ids = fields.One2many(
+        string='Instances',
+        comodel_name='infrastructure.instance',
+        inverse_name='host_id',
     )
 
     @api.multi
@@ -109,3 +127,15 @@ class InfrastructureHost(models.Model):
             if record.memory_metric_id:
                 record.memory_metric_id.reference = record
                 record.memory_metric_ids = [(4, record.memory_metric_id.id)]
+
+    @api.multi
+    @api.depends('file_system_ids.volume_id')
+    def _compute_file_system_volume_ids(self):
+        for record in self:
+            record.file_system_volume_ids = [
+                (6, 0, record.file_system_ids.mapped('volume_id').ids),
+            ]
+
+    @api.model
+    def _search_file_system_volume_ids(self, operator, value):
+        return [('file_system_ids.volume_id', operator, value)]

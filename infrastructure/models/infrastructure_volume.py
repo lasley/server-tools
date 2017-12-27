@@ -15,6 +15,13 @@ class InfrastructureVolume(models.Model):
     name = fields.Char(
         required=True,
     )
+    type = fields.Selection([
+        ('file_system', 'File System'),
+        ('volume', 'Volume')
+    ],
+        default='volume',
+        readonly=True,
+    )
     external_name = fields.Char(
         help='This is the name of the volume according to the volume driver.',
     )
@@ -22,19 +29,20 @@ class InfrastructureVolume(models.Model):
         selection=STATES_ACTIVE,
         default='inactive',
     )
-    state_health = fields.Selection(
-        selection=STATES_HEALTH,
-    )
     access_mode = fields.Char()
     driver = fields.Char()
     driver_option_ids = fields.Many2many(
         string='Driver Options',
         comodel_name='infrastructure.option',
     )
+    environment_id = fields.Many2one(
+        string='Environment',
+        comodel_name='infrastructure.environment',
+        required=True,
+    )
     host_id = fields.Many2one(
         string='Host',
         comodel_name='infrastructure.host',
-        required=True,
     )
     is_host_path = fields.Boolean(
         help='This indicates that the volume is located directly on the host.',
@@ -54,8 +62,25 @@ class InfrastructureVolume(models.Model):
         domain="[('category_id.name', '=', 'Information')]",
     )
 
-    @api.multi
-    def name_get(self):
-        return [
-            (n.id, '%s: "%s"' % (n.name, n.value)) for n in self
+    _sql_constraints = [
+        ('host_name_unique', 'UNIQUE(host_id, name)',
+         'This volume already exists on this host.'),
+    ]
+
+    @api.model
+    def get_or_create(self, name, host, **additional):
+        """Get existing or create new volume according to input."""
+        domain = [
+            ('name', '=', name),
+            ('host_id', '=', host.id),
         ]
+        domain += [(k, '=', v) for k, v in additional.items()]
+        volume = self.search(domain)
+        if volume:
+            return volume[:1]
+        values = {
+            'name': name,
+            'host_id': host.id,
+        }
+        values.update(additional)
+        return self.create(values)

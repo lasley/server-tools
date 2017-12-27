@@ -25,13 +25,11 @@ class InfrastructureSoftware(models.Model):
         string='Versions',
         comodel_name='infrastructure.software.version',
         inverse_name='software_id',
-        context="{'default_software_id': id}",
     )
     license_ids = fields.One2many(
         string='Licenses',
         comodel_name='infrastructure.software.license',
         inverse_name='software_id',
-        context="{'default_software_id': id}",
     )
 
     _sql_constraints = [

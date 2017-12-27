@@ -30,6 +30,8 @@ Known Issues
 
 * Kernel name is hard coded to Linux. This poses obvious data issues with Windows
   hosts, but is purely visual.
+* CPU count and pin in infrastructure service config are not compatible with each
+  other. This can be fixed for the most part by adding a parser for the pinning.
 
 Road Map
 --------
