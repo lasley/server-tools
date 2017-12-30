@@ -4,7 +4,7 @@
 
 from odoo import api, fields, models
 
-from .constants import STATES_ACTIVE, STATES_HEALTH
+from .constants import STATES_ACTIVE
 
 
 class InfrastructureVolume(models.Model):
@@ -68,11 +68,16 @@ class InfrastructureVolume(models.Model):
     ]
 
     @api.model
-    def get_or_create(self, name, host, **additional):
+    def get_or_create(self, name, host=None, environment=None, **additional):
         """Get existing or create new volume according to input."""
+        host_id = host and host.id or False
+        environment_id = environment and environment.id or False
+        if not environment_id and host:
+            environment_id = host.environment_id.id
         domain = [
             ('name', '=', name),
-            ('host_id', '=', host.id),
+            ('host_id', '=', host_id),
+            ('environment_id', '=', environment_id)
         ]
         domain += [(k, '=', v) for k, v in additional.items()]
         volume = self.search(domain)
@@ -80,7 +85,8 @@ class InfrastructureVolume(models.Model):
             return volume[:1]
         values = {
             'name': name,
-            'host_id': host.id,
+            'host_id': host_id,
+            'environment_id': environment_id,
         }
         values.update(additional)
         return self.create(values)

@@ -15,11 +15,6 @@ class InfrastructureOption(models.Model):
     )
     value = fields.Char()
 
-    _sql_constraints = [
-        ('name_value_unique', 'UNIQUE(name, value)',
-         'This name/value combination already exists.'),
-    ]
-
     @api.multi
     def name_get(self):
         return [

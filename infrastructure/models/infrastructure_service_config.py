@@ -137,6 +137,6 @@ class InfrastructureServiceConfig(models.Model):
         for record in self:
             if record.cpu_count and record.cpu_pin:
                 raise ValidationError(_(
-                    'CPU counting and CPU pinning are not compatible features. '
-                    'Use one or the other.',
+                    'CPU counting and CPU pinning are not compatible '
+                    'features. Use one or the other.',
                 ))

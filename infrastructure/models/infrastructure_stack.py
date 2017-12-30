@@ -22,6 +22,10 @@ class InfrastructureStack(models.Model):
         required=True,
         ondelete='restrict',
     )
+    application_version_id = fields.Many2one(
+        string='Application Version',
+        comodel_name='infrastructure.application.version',
+    )
     service_ids = fields.One2many(
         string='Services',
         comodel_name='infrastructure.service',
@@ -34,4 +38,7 @@ class InfrastructureStack(models.Model):
     )
     state_health = fields.Selection(
         selection=STATES_HEALTH,
+    )
+    is_system = fields.Boolean(
+        help='This stack represents infrastructure services.',
     )

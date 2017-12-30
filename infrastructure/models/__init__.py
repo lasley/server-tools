@@ -9,6 +9,10 @@ from . import infrastructure_volume
 
 from . import infrastructure_service
 
+from . import infrastructure_application
+from . import infrastructure_application_option
+from . import infrastructure_application_version
+from . import infrastructure_connector
 from . import infrastructure_file_system
 from . import infrastructure_host
 from . import infrastructure_instance

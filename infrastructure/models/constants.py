@@ -4,6 +4,7 @@
 
 STATES_ACTIVE = [
     ('active', 'Active'),
+    ('activating', 'Activating'),
     ('disconnected', 'Disconnected'),
     ('inactive', 'Inactive'),
     ('purged', 'Purged'),
@@ -13,5 +14,6 @@ STATES_ACTIVE = [
 STATES_HEALTH = [
     ('healthy', 'Healthy'),
     ('degraded', 'Degraded'),
+    ('initializing', 'Initializing'),
     ('unhealthy', 'Unhealthy'),
 ]

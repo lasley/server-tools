@@ -18,17 +18,24 @@
               action="infrastructure_environment_action"
               />
 
+    <menuitem id="menu_infrastucture_application"
+          name="Applications"
+          parent="menu_infrastructure"
+          sequence="20"
+          action="infrastructure_application_action"
+          />
+    
     <menuitem id="menu_infrastucture_host"
               name="Hosts"
               parent="menu_infrastructure"
-              sequence="20"
+              sequence="30"
               action="infrastructure_host_action"
               />
 
     <menuitem id="menu_infrastructure_stack"
               name="Stacks"
               parent="menu_infrastructure"
-              sequence="30"
+              sequence="40"
               action="infrastructure_stack_action"
               />
 

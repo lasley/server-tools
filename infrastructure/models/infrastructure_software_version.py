@@ -40,7 +40,7 @@ class InfrastructureSoftwareVersion(models.Model):
     ]
 
     @api.multi
-    @api.depends('name', 'version')
+    @api.depends('version')
     def _compute_display_name(self):
         for record in self:
             version = record.version and ' %s' % record.version or ''

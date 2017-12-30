@@ -2,7 +2,7 @@
 # Copyright 2017 LasLabs Inc.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 from .constants import STATES_HEALTH
 
@@ -38,3 +38,19 @@ class InfrastructureEnvironment(models.Model):
         comodel_name='res.company',
         help='Users from these companies have access to the environment.',
     )
+    connector = fields.Reference(
+        selection=[],
+        help='This is the reference to the connector that this environment '
+             'is linked to. Connectors should add their backend model to '
+             'this selection.',
+    )
+
+    @api.multi
+    def name_get(self):
+        names = []
+        for record in self:
+            name = record.name
+            if record.connector:
+                name += ' [%s]' % record.connector.name
+            names.append((record.id, name))
+        return names
